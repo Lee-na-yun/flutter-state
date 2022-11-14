@@ -23,6 +23,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int num = 1;
+
+  void increase() {
+    setState(() {
+      num++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -31,17 +39,18 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: AComponent()),
-          Expanded(child: BComponent()),
+          Expanded(child: AComponent(num)),
+          Expanded(child: BComponent(increase)),
         ],
       ),
     );
   }
 }
 
-// a컴포넌트
+// a컴포넌트 // 컨슈머(데이터 소비자) - 상태를 가지고 그림을 그림
 class AComponent extends StatelessWidget {
-  const AComponent({Key? key}) : super(key: key);
+  final int num;
+  const AComponent(this.num, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +63,7 @@ class AComponent extends StatelessWidget {
             // TEXT를 Expanded하면 text가 커지니까 align으로 정렬 후 확장!
             child: Align(
               child: Text(
-                "1",
+                "${num}",
                 style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
               ),
             ),
@@ -65,9 +74,10 @@ class AComponent extends StatelessWidget {
   }
 }
 
-// b컴포넌트
+// b컴포넌트 // 서플라이어(공급자)
 class BComponent extends StatelessWidget {
-  const BComponent({Key? key}) : super(key: key);
+  final increase; //function타입 (타입을 안붙여도 됨)
+  const BComponent(this.increase, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +90,9 @@ class BComponent extends StatelessWidget {
             child: Align(
               //Container로 하면 버튼이 커짐!
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  increase();
+                },
                 child: Text(
                   "숫자증가",
                   style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
