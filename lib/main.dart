@@ -10,7 +10,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: HomeWrap(),
+    );
+  }
+}
+
+class HomeWrap extends StatelessWidget {
+  const HomeWrap({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
+    double screenSize = size * 0.8;
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          width: screenSize,
+          child: Row(
+            children: [
+              Expanded(child: HomePage()),
+              Expanded(child: CComponent()),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -33,8 +56,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
-    double screenSize = size * 0.8;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -101,6 +122,20 @@ class BComponent extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CComponent extends StatelessWidget {
+  const CComponent({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.green,
+      child: Column(
+        children: [Text("CComponent")],
       ),
     );
   }
