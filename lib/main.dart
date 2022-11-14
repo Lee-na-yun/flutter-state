@@ -28,17 +28,12 @@ class _HomePageState extends State<HomePage> {
     double size = MediaQuery.of(context).size.width;
     double screenSize = size * 0.8;
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: screenSize, // 외부 크기를 무조건 잡아놓고 하기!
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(child: AComponent()),
-              Expanded(child: BComponent()),
-            ],
-          ),
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(child: AComponent()),
+          Expanded(child: BComponent()),
+        ],
       ),
     );
   }
@@ -52,7 +47,20 @@ class AComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.yellow,
-      child: Text("AComponent"),
+      child: Column(
+        children: [
+          Text("AComponent"),
+          Expanded(
+            // TEXT를 Expanded하면 text가 커지니까 align으로 정렬 후 확장!
+            child: Align(
+              child: Text(
+                "1",
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -65,7 +73,23 @@ class BComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
-      child: Text("BComponent"),
+      child: Column(
+        children: [
+          Text("BComponent"),
+          Expanded(
+            child: Align(
+              //Container로 하면 버튼이 커짐!
+              child: ElevatedButton(
+                onPressed: () {},
+                child: Text(
+                  "숫자증가",
+                  style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
