@@ -25,9 +25,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    double size = MediaQuery.of(context).size.width;
+    double screenSize = size * 0.8;
     return Scaffold(
-      body: Column(
-        children: [],
+      body: Center(
+        child: SizedBox(
+          width: screenSize, // 외부 크기를 무조건 잡아놓고 하기!
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: AComponent()),
+              Expanded(child: BComponent()),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -41,6 +52,7 @@ class AComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.yellow,
+      child: Text("AComponent"),
     );
   }
 }
@@ -53,6 +65,7 @@ class BComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.blue,
+      child: Text("BComponent"),
     );
   }
 }
