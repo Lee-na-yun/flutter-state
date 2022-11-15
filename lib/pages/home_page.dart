@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/pages/counter_provider.dart';
+import 'package:riverpod_test/pages/product.dart';
 import 'package:riverpod_test/pages/product_list_repository.dart';
 import 'package:riverpod_test/pages/product_repository.dart';
 
@@ -30,6 +31,18 @@ class HomePage extends ConsumerWidget {
               },
             ),
           ),
+          ElevatedButton(
+              onPressed: () {
+                final p1 = ref.read(productListProvider
+                    .notifier); // 데이터를 변경하고싶은 곳에서 read로 읽고 notifier만 붙여주면 됨
+                p1.state = [...p1.state, Product(4, "고구마", 5000)];
+              },
+              // final repo = ref.read(counterProvider.notifier);
+              // repo.increment(); 로 써도 됨!
+              child: Text(
+                "상품추가",
+                style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),
+              )),
           Text(
             "${count}",
             style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),

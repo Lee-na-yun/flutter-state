@@ -1,14 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_test/pages/product.dart';
 
 // 리턴하려면 product dto가 필요함
-class Product {
-  int id;
-  String name;
-  int price;
-
-  //생성자 만들기 alt+insert
-  Product(this.id, this.name, this.price);
-}
 
 final productProvider =
     StateNotifierProvider<ProductRepository, Product>((ref) {
