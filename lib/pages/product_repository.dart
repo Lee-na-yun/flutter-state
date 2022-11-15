@@ -22,5 +22,5 @@ class ProductRepository extends StateNotifier<Product> {
     return Product(1, "바나나", 1000);
   }*/
 
-  ProductRepository() : super(Product(1, "바나나", 1000));
+  ProductRepository() : super(Product(1, "바나나", 1000)) {}
 }
