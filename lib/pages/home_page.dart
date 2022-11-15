@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_test/pages/counter_provider.dart';
+import 'package:riverpod_test/pages/product_repository.dart';
 
 // Provider에게 의존함
 class HomePage extends ConsumerWidget {
@@ -9,12 +10,17 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final count = ref.watch(counterProvider);
+    final product = ref.watch(productProvider);
 
     return Scaffold(
       body: Column(
         children: [
           Text(
             "${count}",
+            style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),
+          ),
+          Text(
+            "${product.name}",
             style: TextStyle(fontSize: 50, fontWeight: FontWeight.w600),
           ),
           ElevatedButton(
