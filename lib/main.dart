@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // provider -> 공급자
 // provider는 창고(Repository)에 데이터를 공급
-final numProvider = Provider((_) => 2);
+//final numProvider = Provider((_) => 2); //상태 변경 불가
+final numProvider = StateProvider((_) => 2); //데이터 변경 가능
 
 void main() {
   runApp(
@@ -27,49 +28,37 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int num = 1;
-
-  void increase() {
-    setState(() {
-      num++;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    double size = MediaQuery.of(context).size.width;
-    double screenSize = size * 0.8;
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(child: AComponent(num)),
-          Expanded(child: BComponent(increase)),
+          Expanded(child: AComponent()),
+          Expanded(child: BComponent()),
         ],
       ),
     );
   }
 }
 
-// a컴포넌트 // 컨슈머(데이터 소비자) - 상태를 가지고 그림을 그림
+// a컴포넌트 // 컨슈머(데이터 소비자) - 상태를 가지고 그림을 그림 ==> 소비자는 공급자(Provider)에게 데이터를 요청한다.
+// ==> 공급자는 창고에서 데이터를 꺼내서 돌려준다.
 // StatelessWidget 대신에 Riverpod의 ConsumerWidget을 상속받아 사용합니다. (다시 그리고싶은 것에 사용)
 class AComponent extends ConsumerWidget {
-  final int num;
-  const AComponent(this.num, {Key? key}) : super(key: key);
+  //final int num;
+  const AComponent({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // WidgetRef ref로 provider에 접근 가능 (= 공급자에게 접근 -> 공급자가 데이터 가져옴)
     // 소비를 한번만 할 때 read 사용!
-    int num = ref.read(numProvider);
+    // watch는 numProvider의 값이 변경될 때마다 rebuild됨
+    //int num = ref.read(numProvider);
+    int num = ref.watch(numProvider);
 
     return Container(
       color: Colors.yellow,
@@ -92,12 +81,11 @@ class AComponent extends ConsumerWidget {
 }
 
 // b컴포넌트 // 서플라이어(공급자)
-class BComponent extends StatelessWidget {
-  final increase; //function타입 (타입을 안붙여도 됨)
-  const BComponent(this.increase, {Key? key}) : super(key: key);
+class BComponent extends ConsumerWidget {
+  const BComponent({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: Colors.blue,
       child: Column(
@@ -108,7 +96,9 @@ class BComponent extends StatelessWidget {
               //Container로 하면 버튼이 커짐!
               child: ElevatedButton(
                 onPressed: () {
-                  increase();
+                  final repo = ref.read(
+                      numProvider.notifier); //stateProvider일때만 notifier 사용가능
+                  repo.state = repo.state + 5;
                 },
                 child: Text(
                   "숫자증가",
